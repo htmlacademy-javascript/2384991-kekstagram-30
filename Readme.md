@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Kseniia Lazarov](https://up.htmlacademy.ru/javascript/30/user/2384991).
-* Наставник: `Неизвестно`.
+* Наставник: [Ольга Ветер](https://htmlacademy.ru/profile/id73199).
 
 ---
 
