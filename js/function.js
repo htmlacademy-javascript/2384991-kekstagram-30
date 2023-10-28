@@ -40,3 +40,4 @@ extractNumber('ECMAScript 2022');
 extractNumber('1 кефир, 0.5 батона');
 extractNumber('агент 007');
 extractNumber('а я томат');
+
