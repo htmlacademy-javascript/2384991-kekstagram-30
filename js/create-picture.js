@@ -1,7 +1,7 @@
 // ЗАДАНИЕ - создать 25 объектов, после чего собрать их в массив, каждый объект состоит из 5 ключей
 
-import {getRandomInteger, getRandomArrayElement, createIdGenerator} from './util.js';
-import {DESCRIPTIONS, NAMES, COMMENT_MESSAGES} from './data.js';
+import { getRandomInteger, getRandomArrayElement, createIdGenerator } from './util.js';
+import { DESCRIPTIONS, NAMES, COMMENT_MESSAGES } from './data.js';
 
 const PICTURE_COUNT = 25;
 const LIKES_MIN_COUNT = 15;
@@ -40,4 +40,4 @@ const createPicture = () => ({
 
 const getPictures = (count) => Array.from({length: count}, createPicture);
 
-export {getPictures, PICTURE_COUNT};
+export { getPictures, PICTURE_COUNT };
