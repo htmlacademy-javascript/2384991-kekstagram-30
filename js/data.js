@@ -22,4 +22,4 @@ const COMMENT_MESSAGES = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
 
-export {DESCRIPTIONS, NAMES, COMMENT_MESSAGES};
+export { DESCRIPTIONS, NAMES, COMMENT_MESSAGES };

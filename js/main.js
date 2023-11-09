@@ -1,4 +1,3 @@
-import {getPictures, PICTURE_COUNT} from './create-picture.js';
+import { renderMiniatures } from './miniatures.js';
 
-getPictures(PICTURE_COUNT);
-
+renderMiniatures();
