@@ -1,10 +1,18 @@
 import { isEscapeKey, isEnterKey } from './util.js';
-import { picturesContainer } from './miniatures.js';
+import { picturesContainer, similarMiniatures, renderMiniatures } from './miniatures.js';
 
 const bigPictureContainer = document.querySelector('.big-picture');
 const bigPictureClose = bigPictureContainer.querySelector('.big-picture__cancel');
-// const bigPicturePreview = bigPictureContainer.querySelector('.big-picture__preview');
-// const bigPictureImg = bigPictureContainer.querySelector('.big-picture__img');
+const countComment = bigPictureContainer.querySelector('.social__comment-count');
+const commentsLoader = bigPictureContainer.querySelector('.comments-loader');
+
+
+const renderFullsizePicture = ({ url, description, likes }) => {
+  bigPictureContainer.querySelector('.big-picture__img img').src = url;
+  bigPictureContainer.querySelector('.big-picture__img img').alt = description;
+  bigPictureContainer.querySelector('.likes-count').textContent = likes;
+  bigPictureContainer.querySelector('.social__caption').textContent = description;
+};
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -14,34 +22,54 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
-const openBigPicture = (target) => {
-  if (target.closest('.picture')) {
+const renderGallery = () => {
+  const openBigPicture = (target) => {
+    const miniature = target.closest('[data-miniature-id]');
+
+    if (!miniature) {
+      return;
+    }
+
+    const miniatureId = parseInt(miniature.dataset.miniatureId, 10);
+    const selectedPicture = similarMiniatures.find(({ id }) => id === miniatureId);
+    renderFullsizePicture(selectedPicture);
+
     bigPictureContainer.classList.remove('hidden');
     document.body.classList.add('modal-open');
+    countComment.classList.add('hidden');
+    commentsLoader.classList.add('hidden');
 
     document.addEventListener('keydown', onDocumentKeydown);
-  }
-};
+  };
 
-const closeBigPicture = () => {
-  bigPictureContainer.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-
-  document.removeEventListener('keydown', onDocumentKeydown);
-};
-
-picturesContainer.addEventListener('click', (evt) => {
-  openBigPicture(evt.target);
-});
-
-picturesContainer.addEventListener('keydown', (evt) => {
-  if (isEnterKey(evt)) {
+  const onOpenPictureClick = (evt) => {
     openBigPicture(evt.target);
-  }
-});
+  };
 
-bigPictureClose.addEventListener('click', () => {
-  closeBigPicture();
-});
+  picturesContainer.addEventListener('click', onOpenPictureClick);
 
-export { openBigPicture, closeBigPicture };
+  const onOpenPictureKeydown = (evt) => {
+    if (isEnterKey(evt)) {
+      openBigPicture(evt.target);
+    }
+  };
+
+  picturesContainer.addEventListener('keydown', onOpenPictureKeydown);
+
+  const closeBigPicture = () => {
+    bigPictureContainer.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+
+    document.removeEventListener('keydown', onDocumentKeydown);
+  };
+
+  const onClosePictureButtonClick = () => {
+    closeBigPicture();
+  };
+
+  bigPictureClose.addEventListener('click', onClosePictureButtonClick);
+
+  renderMiniatures();
+};
+
+export { renderGallery };

@@ -13,6 +13,7 @@ const renderMiniatures = () => {
 
   similarMiniatures.forEach(({ url, description, comments, likes, id }) => {
     const miniatureTemplate = similarMiniatureTemplate.cloneNode(true);
+
     miniatureTemplate.querySelector('.picture__img').src = url;
     miniatureTemplate.querySelector('.picture__img').alt = description;
     miniatureTemplate.querySelector('.picture__comments').textContent = comments.length;
@@ -30,4 +31,4 @@ const clearMiniatures = () => {
 };
 
 
-export { picturesContainer, renderMiniatures, clearMiniatures };
+export { picturesContainer, similarMiniatures, renderMiniatures, clearMiniatures };

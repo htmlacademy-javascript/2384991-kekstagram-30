@@ -1,5 +1,4 @@
-import { renderMiniatures } from './miniatures.js';
-import './open-fullsize-picture.js';
+import { renderGallery } from './open-fullsize-picture.js';
 
-renderMiniatures();
+renderGallery();
 
