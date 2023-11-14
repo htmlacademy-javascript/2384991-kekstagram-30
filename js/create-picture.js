@@ -13,6 +13,7 @@ const MAX_STRING_IN_COMMENTS = 2;
 
 const generateCommentId = createIdGenerator();
 const generatePictureId = createIdGenerator();
+const generateUrlId = createIdGenerator();
 
 // добавляет случайные комментарии (создает массив)
 
@@ -32,7 +33,7 @@ const createComments = () => ({
 
 const createPicture = () => ({
   id: generatePictureId(),
-  url: `photos/${getRandomInteger(1, PICTURE_COUNT)}.jpg`,
+  url: `photos/${generateUrlId()}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomInteger(LIKES_MIN_COUNT, LIKES_MAX_COUNT),
   comments: Array.from ({length: getRandomInteger(0, MAX_COMMENT_COUNT - 1)}, createComments), // создает массив подобных комментариев
