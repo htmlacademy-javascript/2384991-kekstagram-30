@@ -4,9 +4,14 @@ import { renderComments } from './create-social-comments.js';
 
 const bigPictureContainer = document.querySelector('.big-picture');
 const bigPictureClose = bigPictureContainer.querySelector('.big-picture__cancel');
+
+const COMMENT_COUNT_SHOW = 5;
 const countComment = bigPictureContainer.querySelector('.social__comment-count');
 const commentsLoader = bigPictureContainer.querySelector('.comments-loader');
+const commentTotalCount = bigPictureContainer.querySelector('.social__comment-total-count');
+const commentShownCount = bigPictureContainer.querySelector('.social__comment-shown-count');
 
+let commentsCountShown = 0;
 
 const renderFullsizePicture = ({ url, description, likes }) => {
   bigPictureContainer.querySelector('.big-picture__img img').src = url;
@@ -39,8 +44,6 @@ const renderGallery = () => {
     bigPictureContainer.classList.remove('hidden');
     document.body.classList.add('modal-open');
     document.addEventListener('keydown', onDocumentKeydown);
-    countComment.classList.add('hidden');
-    commentsLoader.classList.add('hidden');
   };
 
   const onOpenPictureClick = (evt) => {
