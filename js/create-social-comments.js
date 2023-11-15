@@ -21,7 +21,7 @@ const renderComments = (comments) => {
 
   let shownCommentsCount = 0;
 
-  const loadMoreComments = () => {
+  const onCommentsLoaderClick = () => {
     const commentsToRender = comments.slice(shownCommentsCount, shownCommentsCount + COMMENT_COUNT_SHOW);
 
     commentsToRender.forEach((item) => {
@@ -43,9 +43,9 @@ const renderComments = (comments) => {
     }
   };
 
-  loadMoreComments();
+  onCommentsLoaderClick();
 
-  commentsLoader.addEventListener('click', loadMoreComments);
+  commentsLoader.addEventListener('click', onCommentsLoaderClick);
 };
 
 export { renderComments };
