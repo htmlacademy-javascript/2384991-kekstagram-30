@@ -1,4 +1,4 @@
-import { isEscapeKey, isEnterKey } from './util.js';
+import { isEscapeKey } from './util.js';
 import { picturesContainer, similarMiniatures, renderMiniatures } from './create-miniatures.js';
 import { renderComments } from './create-social-comments.js';
 
@@ -17,6 +17,7 @@ const onDocumentKeydown = (evt) => {
     evt.preventDefault();
     bigPictureContainer.classList.add('hidden');
     document.body.classList.remove('modal-open');
+    document.removeEventListener('keydown', onDocumentKeydown);
   }
 };
 
@@ -38,19 +39,11 @@ const renderGallery = () => {
     document.addEventListener('keydown', onDocumentKeydown);
   };
 
-  const onOpenPictureClick = (evt) => {
+  const onOpenBigPictureClick = (evt) => {
     openBigPicture(evt.target);
   };
 
-  picturesContainer.addEventListener('click', onOpenPictureClick);
-
-  const onOpenPictureKeydown = (evt) => {
-    if (isEnterKey(evt)) {
-      openBigPicture(evt.target);
-    }
-  };
-
-  picturesContainer.addEventListener('keydown', onOpenPictureKeydown);
+  picturesContainer.addEventListener('click', onOpenBigPictureClick);
 
   const closeBigPicture = () => {
     bigPictureContainer.classList.add('hidden');
@@ -59,11 +52,11 @@ const renderGallery = () => {
     document.removeEventListener('keydown', onDocumentKeydown);
   };
 
-  const onClosePictureButtonClick = () => {
+  const onCloseButtonClick = () => {
     closeBigPicture();
   };
 
-  bigPictureClose.addEventListener('click', onClosePictureButtonClick);
+  bigPictureClose.addEventListener('click', onCloseButtonClick);
 
   renderMiniatures();
 };
