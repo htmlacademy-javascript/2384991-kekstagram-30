@@ -1,4 +1,6 @@
 import { isEscapeKey } from './util.js';
+import { resetScale } from './scale-control.js';
+
 
 const form = document.querySelector('.img-upload__form');
 const uploadPictureContainer = form.querySelector('.img-upload__overlay');
@@ -72,6 +74,7 @@ const renderUploadPicture = () => {
     form.reset();
     pristine.reset();
     uploadInput.value = '';
+    resetScale();
     uploadPictureContainer.classList.add('hidden');
     document.body.classList.remove('modal-open');
     document.removeEventListener('keydown', onDocumentKeydown);
