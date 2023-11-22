@@ -33,7 +33,6 @@ const renderGallery = () => {
     const selectedPicture = similarMiniatures.find(({ id }) => id === miniatureId);
     renderFullsizePicture(selectedPicture);
     renderComments(selectedPicture.comments);
-
     bigPictureContainer.classList.remove('hidden');
     document.body.classList.add('modal-open');
     document.addEventListener('keydown', onDocumentKeydown);
@@ -48,8 +47,6 @@ const renderGallery = () => {
   const closeBigPicture = () => {
     bigPictureContainer.classList.add('hidden');
     document.body.classList.remove('modal-open');
-
-    document.removeEventListener('keydown', onDocumentKeydown);
   };
 
   const onCloseButtonClick = () => {

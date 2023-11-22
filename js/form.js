@@ -1,4 +1,7 @@
 import { isEscapeKey } from './util.js';
+import { resetScale } from './scale-control.js';
+import { resetValues, uploadImagePreview } from './slider.js';
+
 
 const form = document.querySelector('.img-upload__form');
 const uploadPictureContainer = form.querySelector('.img-upload__overlay');
@@ -63,7 +66,15 @@ const renderUploadPicture = () => {
   };
 
   const onOpenUploadPictureChange = () => {
-    openUploadPicture();
+    const file = uploadInput.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        uploadImagePreview.src = e.target.result;
+        openUploadPicture();
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   uploadInput.addEventListener('change', onOpenUploadPictureChange);
@@ -71,7 +82,9 @@ const renderUploadPicture = () => {
   const closeUploadPicture = () => {
     form.reset();
     pristine.reset();
-    uploadInput.value = '';
+    uploadImagePreview.removeAttribute('src');
+    resetScale();
+    resetValues();
     uploadPictureContainer.classList.add('hidden');
     document.body.classList.remove('modal-open');
     document.removeEventListener('keydown', onDocumentKeydown);
