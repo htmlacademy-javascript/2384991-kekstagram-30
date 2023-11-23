@@ -57,37 +57,3 @@ isMeetingInWorkTime('08:00', '14:30', '14:00', 90); // false
 isMeetingInWorkTime('14:00', '17:30', '08:0', 90); // false
 isMeetingInWorkTime('8:00', '17:30', '08:00', 900); // false
 
-// первая попытка и трудозатратное решение
-
-/* let isMeetingInWorkTime = function (workBegin, workEnd, meetingBegin, time) {
-  const splitMeeting = meetingBegin.split(':');
-  let hours = parseInt(splitMeeting[0], 10);
-  let minutes = parseInt(splitMeeting[1], 10);
-
-  if (time === 60) {
-    hours++;
-  }
-
-  if (time >= 120) {
-    const additionalHours = Math.floor(time / 60);
-    hours += additionalHours;
-    const remainingMinutes = time % 60;
-    minutes += remainingMinutes;
-
-    if (minutes >= 60) {
-      hours++;
-      minutes -= 60;
-    }
-  } else {
-    if (minutes + time < 60) {
-      minutes = minutes + time;
-    } else {
-      hours++;
-      minutes = time - (60 - minutes);
-    }
-  }
-
-  const meetingEnd = `${hours}:${minutes}`;
-  return meetingEnd <= workEnd;
-};*/
-

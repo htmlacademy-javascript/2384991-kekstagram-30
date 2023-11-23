@@ -2,6 +2,8 @@ import { isEscapeKey } from './util.js';
 import { resetScale } from './scale-control.js';
 import { resetValues, uploadImagePreview } from './slider.js';
 
+const MAX_HASHTAG_COUNT = 5;
+const VALID_HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 
 const form = document.querySelector('.img-upload__form');
 const uploadPictureContainer = form.querySelector('.img-upload__overlay');
@@ -9,9 +11,6 @@ const uploadInput = form.querySelector('.img-upload__input');
 const uploadPictureClose = form.querySelector('.img-upload__cancel');
 const hashtagField = form.querySelector('.text__hashtags');
 const commentField = form.querySelector('.text__description');
-
-const MAX_HASHTAG_COUNT = 5;
-const VALID_HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -69,7 +68,7 @@ const renderUploadPicture = () => {
     const file = uploadInput.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = function (e) {
+      reader.onload = (e) => {
         uploadImagePreview.src = e.target.result;
         openUploadPicture();
       };
