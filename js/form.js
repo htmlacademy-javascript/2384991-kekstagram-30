@@ -1,4 +1,7 @@
 import { isEscapeKey } from './util.js';
+import { appendErrorMessage } from './send-data-error-message.js';
+import { appendSuccessMessage } from './send-data-success-message.js';
+import { sendData } from './api.js';
 import { resetScale } from './scale-control.js';
 import { resetValues, uploadImagePreview } from './slider.js';
 
@@ -42,43 +45,33 @@ pristine.addValidator(hashtagField, validateUniqueHashtags, 'Хэш-теги н�
 
 const isTextFieldFocused = () => document.activeElement === hashtagField || document.activeElement === commentField;
 
-form.addEventListener('submit', (evt) => {
-  if (!pristine.validate()) {
+const setUserFormSubmit = (onSuccess) => {
+  form.addEventListener('submit', async (evt) => {
     evt.preventDefault();
-  }
-});
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      const formData = new FormData(evt.target);
+      try {
+        await sendData(
+          () => {
+            onSuccess();
+          },
+          () => {
+            appendErrorMessage();
+          },
+          formData
+        );
+      } catch (error) {
+        appendErrorMessage();
+      }
+    }
+  });
+};
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt) && !isTextFieldFocused()) {
     evt.preventDefault();
-    uploadPictureContainer.classList.add('hidden');
-    document.body.classList.remove('modal-open');
-    document.removeEventListener('keydown', onDocumentKeydown);
-  }
-};
-
-const renderUploadPicture = () => {
-  const openUploadPicture = () => {
-    uploadPictureContainer.classList.remove('hidden');
-    document.body.classList.add('modal-open');
-    document.addEventListener('keydown', onDocumentKeydown);
-  };
-
-  const onOpenUploadPictureChange = () => {
-    const file = uploadInput.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        uploadImagePreview.src = e.target.result;
-        openUploadPicture();
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  uploadInput.addEventListener('change', onOpenUploadPictureChange);
-
-  const closeUploadPicture = () => {
     form.reset();
     pristine.reset();
     uploadImagePreview.removeAttribute('src');
@@ -87,14 +80,51 @@ const renderUploadPicture = () => {
     uploadPictureContainer.classList.add('hidden');
     document.body.classList.remove('modal-open');
     document.removeEventListener('keydown', onDocumentKeydown);
-  };
-
-  const onCloseButtonClick = () => {
-    closeUploadPicture();
-  };
-
-  uploadPictureClose.addEventListener('click', onCloseButtonClick);
-
+  }
 };
 
-export { renderUploadPicture };
+const openUploadPicture = () => {
+  uploadPictureContainer.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  document.addEventListener('keydown', onDocumentKeydown);
+};
+
+const onOpenUploadPictureChange = () => {
+  const file = uploadInput.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      uploadImagePreview.src = e.target.result;
+      openUploadPicture();
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
+uploadInput.addEventListener('change', onOpenUploadPictureChange);
+
+const closeUploadPicture = () => {
+  form.reset();
+  pristine.reset();
+  uploadImagePreview.removeAttribute('src');
+  resetScale();
+  resetValues();
+  uploadPictureContainer.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  form.removeEventListener('keydown', onDocumentKeydown);
+};
+
+const onCloseButtonClick = () => {
+  closeUploadPicture();
+};
+
+uploadPictureClose.addEventListener('click', onCloseButtonClick);
+
+setUserFormSubmit(
+  () => {
+    appendSuccessMessage();
+    closeUploadPicture();
+  },
+);
+
+export { openUploadPicture, closeUploadPicture, setUserFormSubmit };

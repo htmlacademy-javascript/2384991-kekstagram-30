@@ -1,17 +1,13 @@
-import { getPictures, PICTURE_COUNT } from './create-picture.js';
-
 const picturesContainer = document.querySelector('.pictures');
 picturesContainer.querySelector('.pictures__title').classList.remove('visually-hidden');
 
 const similarMiniatureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-const similarMiniatures = getPictures(PICTURE_COUNT);
-
-const renderMiniatures = () => {
+const renderMiniatures = (pictures) => {
 
   const miniatureFragment = document.createDocumentFragment();
 
-  similarMiniatures.forEach(({ url, description, comments, likes, id }) => {
+  pictures.forEach(({ url, description, comments, likes, id }) => {
     const miniatureTemplate = similarMiniatureTemplate.cloneNode(true);
 
     miniatureTemplate.querySelector('.picture__img').src = url;
@@ -26,9 +22,9 @@ const renderMiniatures = () => {
   picturesContainer.append(miniatureFragment);
 };
 
-const clearMiniatures = () => {
+/*const clearMiniatures = () => {
   picturesContainer.innerHTML = '';
 };
+*/
 
-
-export { picturesContainer, similarMiniatures, renderMiniatures, clearMiniatures };
+export { renderMiniatures };
