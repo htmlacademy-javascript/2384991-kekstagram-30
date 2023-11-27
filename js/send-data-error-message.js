@@ -1,43 +1,53 @@
+// с этим кодом не работало закрытие по Esc, закрывались сразу и форма, и окно с ошибкой
+
 import { isEscapeKey } from './util.js';
 
-const errorTemplate = document.querySelector('#error');
-const errorMessage = errorTemplate.content.cloneNode(true);
-const errorButton = errorMessage.querySelector('.error__button');
 
+const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
+const createErrorMessage = () => errorMessageTemplate.cloneNode(true);
+const currentErrorMessage = createErrorMessage();
+const errorButton = currentErrorMessage.querySelector('.error__button');
 
 const appendErrorMessage = () => {
-  const currentErrorMessage = document.querySelector('.error');
-  document.body.appendChild(errorMessage);
-  currentErrorMessage.classList.remove('hidden');
+  document.body.append(currentErrorMessage);
 };
 
 const removeErrorMessage = () => {
-  const currentErrorMessage = document.querySelector('.error');
   if (currentErrorMessage) {
-    currentErrorMessage.classList.add('hidden');
+    //console.log('Removing error message');
+    currentErrorMessage.remove();
   }
 };
 
-const onDocumentClick = () => {
+const onDocumentClick = (evt) => {
+  if (evt.target.closest('.error__inner')) {
+    return;
+  }
   removeErrorMessage();
 };
 
-const onDocumentKeydown = () => {
-  if (isEscapeKey) {
+const onDocumentKeydown = (evt) => {
+  const isErrorExist = Boolean(document.querySelector('.error'));
+  if (!isErrorExist) {
+    return;
+  }
+
+  if (isEscapeKey(evt) && isErrorExist) {
     removeErrorMessage();
-    document.removeEventListener('click', onDocumentClick);
+    document.body.removeEventListener('click', onDocumentClick);
   }
 };
 
 const onErrorButtonClick = () => {
+  // console.log('Error button clicked');
   removeErrorMessage();
   document.removeEventListener('keydown', onDocumentKeydown);
-  document.removeEventListener('click', onDocumentClick);
+  document.body.removeEventListener('click', onDocumentClick);
 };
 
 document.addEventListener('keydown', onDocumentKeydown);
-document.addEventListener('click', onDocumentClick);
+document.body.addEventListener('click', onDocumentClick);
 errorButton.addEventListener('click', onErrorButtonClick);
 
 
-export { appendErrorMessage, removeErrorMessage };
+export { appendErrorMessage };

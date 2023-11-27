@@ -1,6 +1,5 @@
 import { isEscapeKey } from './util.js';
-import { appendErrorMessage } from './send-data-error-message.js';
-import { appendSuccessMessage } from './send-data-success-message.js';
+import { showSuccessMessage, showErrorMessage } from './message.js';
 import { sendData } from './api.js';
 import { resetScale } from './scale-control.js';
 import { resetValues, uploadImagePreview } from './slider.js';
@@ -8,12 +7,18 @@ import { resetValues, uploadImagePreview } from './slider.js';
 const MAX_HASHTAG_COUNT = 5;
 const VALID_HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 
+const SubmitButtonText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Публикую...'
+};
+
 const form = document.querySelector('.img-upload__form');
 const uploadPictureContainer = form.querySelector('.img-upload__overlay');
 const uploadInput = form.querySelector('.img-upload__input');
 const uploadPictureClose = form.querySelector('.img-upload__cancel');
 const hashtagField = form.querySelector('.text__hashtags');
 const commentField = form.querySelector('.text__description');
+const submitButton = form.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -45,32 +50,48 @@ pristine.addValidator(hashtagField, validateUniqueHashtags, 'Хэш-теги н�
 
 const isTextFieldFocused = () => document.activeElement === hashtagField || document.activeElement === commentField;
 
-const setUserFormSubmit = (onSuccess) => {
-  form.addEventListener('submit', async (evt) => {
-    evt.preventDefault();
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = SubmitButtonText.SENDING;
+};
 
-    const isValid = pristine.validate();
-    if (isValid) {
-      const formData = new FormData(evt.target);
-      try {
-        await sendData(
-          () => {
-            onSuccess();
-          },
-          () => {
-            appendErrorMessage();
-          },
-          formData
-        );
-      } catch (error) {
-        appendErrorMessage();
-      }
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = SubmitButtonText.IDLE;
+};
+
+const sendPhoto = async (evt, onSuccess) => {
+  const isValid = pristine.validate();
+  if (isValid) {
+    blockSubmitButton();
+    const formData = new FormData(evt.target);
+    try {
+      await sendData(
+        formData,
+        () => {
+          onSuccess();
+        }
+      );
+    } catch (error) {
+      showErrorMessage();
+    } finally {
+      unblockSubmitButton();
     }
-  });
+  }
+};
+
+const setUserFormSubmit = (onSuccess) => {
+  const onFormSubmit = async (evt) => {
+    evt.preventDefault();
+    sendPhoto(evt, onSuccess);
+  };
+
+  form.addEventListener('submit', onFormSubmit);
 };
 
 const onDocumentKeydown = (evt) => {
-  if (isEscapeKey(evt) && !isTextFieldFocused()) {
+  const isErrorMessageExist = Boolean(document.querySelector('.error'));
+  if (isEscapeKey(evt) && !isTextFieldFocused() && !isErrorMessageExist) {
     evt.preventDefault();
     form.reset();
     pristine.reset();
@@ -111,7 +132,7 @@ const closeUploadPicture = () => {
   resetValues();
   uploadPictureContainer.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  form.removeEventListener('keydown', onDocumentKeydown);
+  document.removeEventListener('keydown', onDocumentKeydown);
 };
 
 const onCloseButtonClick = () => {
@@ -122,7 +143,7 @@ uploadPictureClose.addEventListener('click', onCloseButtonClick);
 
 setUserFormSubmit(
   () => {
-    appendSuccessMessage();
+    showSuccessMessage();
     closeUploadPicture();
   },
 );

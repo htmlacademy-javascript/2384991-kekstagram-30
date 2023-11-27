@@ -3,7 +3,7 @@ import { openUploadPicture, closeUploadPicture } from './form.js';
 import { renderMiniatures } from './create-miniatures.js';
 import './slider.js';
 import { getData } from './api.js';
-import { showAlert } from './get-data-error-message.js';
+import { showAlert } from './util.js';
 
 const bootstrap = async () => {
   try {

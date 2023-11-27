@@ -5,40 +5,37 @@ const Route = {
   SEND_DATA: '/',
 };
 
+const Method = {
+  GET: 'GET',
+  POST: 'POST',
+};
+
 const ErrorText = {
   GET: 'Не удалось загрузить данные. Попробуйте обновить страницу',
   POST: 'Не удалось отправить форму. Попробуйте ещё раз',
 };
 
-const getData = async () => {
+const load = async (route, errorText = null, method = Method.GET, body = null, onSuccess = null) => {
   try {
-    const response = await fetch(`${BASE_URL}${Route.GET_DATA}`);
+    const response = await fetch(`${BASE_URL}${route}`, { method, body });
     if (!response.ok) {
-      throw new Error(ErrorText.GET);
+      throw new Error(`Произошла ошибка ${response.status}: ${response.statusText}`);
     }
+
+    if (onSuccess) {
+      onSuccess(response);
+    }
+
     return response.json();
-  } catch (error) {
-    throw new Error(ErrorText.GET);
+  } catch (err) {
+    throw new Error(errorText ?? err.message);
   }
 };
 
 
-const sendData = async (onSuccess, onError, body) => {
-  try {
-    const response = await fetch(`${BASE_URL}${Route.SEND_DATA}`, {
-      method: 'POST',
-      body: body,
-    });
+const getData = () => load(Route.GET_DATA, ErrorText.GET_DATA);
 
-    if (!response.ok) {
-      throw new Error(ErrorText.POST);
-    }
-
-    onSuccess();
-  } catch (error) {
-    onError();
-  }
-};
+const sendData = (pictureData, onSuccess) => load(Route.SEND_DATA, ErrorText.POST_DATA, Method.POST, pictureData, onSuccess);
 
 
 export { getData, sendData };

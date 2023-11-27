@@ -1,4 +1,16 @@
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
+const REMOVE_MESSAGE_TIMEOUT = 5000;
 
-export { isEscapeKey };
+const showAlert = () => {
+  const dataErrorMessageTemplate = document.querySelector('#data-error');
+  const dataErrorMessage = dataErrorMessageTemplate.content.cloneNode(true);
+  document.body.appendChild(dataErrorMessage);
+  const alertContainer = document.querySelector('.data-error');
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, REMOVE_MESSAGE_TIMEOUT);
+};
+
+export { isEscapeKey, showAlert };

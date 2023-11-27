@@ -1,11 +1,18 @@
+// с этим кодом работало все, но при нажатии на окно с ошибкой на любое произвольное место, происходило закрытие,
+// несмотря на if (evt.target.closest('.succes__inner'))
+
 import { isEscapeKey } from './util.js';
 
-const successMessageTemplate = document.querySelector('#success');
-const createSuccessMessage = () => successMessageTemplate.content.cloneNode(true);
-const successButton = createSuccessMessage().querySelector('.success__button');
+const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
+const createSuccessMessage = () => successMessageTemplate.cloneNode(true);
+const currentSuccessMessage = createSuccessMessage();
+const successButton = successMessageTemplate.querySelector('.success__button');
+
+const appendSuccessMessage = () => {
+  document.body.append(currentSuccessMessage);
+};
 
 const removeSuccessMessage = () => {
-  const currentSuccessMessage = document.querySelector('.success');
   if (currentSuccessMessage) {
     currentSuccessMessage.remove();
   }
@@ -15,18 +22,17 @@ const onSuccessButtonClick = () => {
   removeSuccessMessage();
 };
 
-const onDocumentKeydown = () => {
-  if (isEscapeKey) {
+const onDocumentKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
     removeSuccessMessage();
   }
 };
 
-const onDocumentClick = () => {
+const onDocumentClick = (evt) => {
+  if (evt.target.closest('.succes__inner')) {
+    return;
+  }
   removeSuccessMessage();
-};
-
-const appendSuccessMessage = () => {
-  document.body.appendChild(createSuccessMessage());
 };
 
 successButton.addEventListener('click', onSuccessButtonClick);
