@@ -68,7 +68,7 @@ noUiSlider.create(slider, {
 const updateImageStyle = () => {
   const effect = selectedEffect.filter;
   effectLevelInput.value = slider.noUiSlider.get();
-  uploadImagePreview.style.filter = (selectedEffect === 'default') ? '' : `${effect}(${effectLevelInput.value}${selectedEffect.unit || ''})`;
+  uploadImagePreview.style.filter = (selectedEffect === effectList.default) ? '' : `${effect}(${effectLevelInput.value}${selectedEffect.unit || ''})`;
 };
 
 const resetValues = () => {

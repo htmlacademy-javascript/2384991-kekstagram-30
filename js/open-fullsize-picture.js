@@ -1,7 +1,8 @@
 import { isEscapeKey } from './util.js';
-import { picturesContainer, similarMiniatures, renderMiniatures } from './create-miniatures.js';
 import { renderComments } from './create-social-comments.js';
 
+
+const picturesContainer = document.querySelector('.pictures');
 const bigPictureContainer = document.querySelector('.big-picture');
 const bigPictureClose = bigPictureContainer.querySelector('.big-picture__cancel');
 
@@ -21,8 +22,9 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
-const renderGallery = () => {
+const renderGallery = (pictures) => {
   const openBigPicture = (target) => {
+
     const miniature = target.closest('[data-miniature-id]');
 
     if (!miniature) {
@@ -30,7 +32,7 @@ const renderGallery = () => {
     }
 
     const miniatureId = parseInt(miniature.dataset.miniatureId, 10);
-    const selectedPicture = similarMiniatures.find(({ id }) => id === miniatureId);
+    const selectedPicture = pictures.find(({ id }) => id === miniatureId);
     renderFullsizePicture(selectedPicture);
     renderComments(selectedPicture.comments);
     bigPictureContainer.classList.remove('hidden');
@@ -55,7 +57,6 @@ const renderGallery = () => {
 
   bigPictureClose.addEventListener('click', onCloseButtonClick);
 
-  renderMiniatures();
 };
 
 export { renderGallery };

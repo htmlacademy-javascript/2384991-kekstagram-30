@@ -1,6 +1,20 @@
 import { renderGallery } from './open-fullsize-picture.js';
-import { renderUploadPicture } from './form.js';
+import { openUploadPicture, closeUploadPicture } from './form.js';
+import { renderMiniatures } from './create-miniatures.js';
 import './slider.js';
+import { getData } from './api.js';
+import { showAlert } from './util.js';
 
-renderGallery();
-renderUploadPicture();
+const bootstrap = async () => {
+  try {
+    const pictures = await getData();
+    renderGallery(pictures);
+    renderMiniatures(pictures);
+  } catch (error) {
+    showAlert();
+  }
+};
+
+bootstrap();
+openUploadPicture();
+closeUploadPicture();

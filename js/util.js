@@ -1,27 +1,16 @@
-// создает уникальное позитивное рандомное число в указанном диапазоне
-
-const getRandomInteger = (a, b) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
-
-// возвращает случайный элемент массива
-
-const getRandomArrayElement = (items) => items[getRandomInteger(0, items.length - 1)];
-
-// создает функцию-генератор для получения уникальных идентификаторов
-
-function createIdGenerator () {
-  let lastGeneratedId = 0;
-
-  return function () {
-    lastGeneratedId += 1;
-    return lastGeneratedId;
-  };
-}
-
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export { getRandomInteger, getRandomArrayElement, createIdGenerator, isEscapeKey };
+const REMOVE_MESSAGE_TIMEOUT = 5000;
+
+const showAlert = () => {
+  const dataErrorMessageTemplate = document.querySelector('#data-error');
+  const dataErrorMessage = dataErrorMessageTemplate.content.cloneNode(true);
+  document.body.appendChild(dataErrorMessage);
+  const alertContainer = document.querySelector('.data-error');
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, REMOVE_MESSAGE_TIMEOUT);
+};
+
+export { isEscapeKey, showAlert };
