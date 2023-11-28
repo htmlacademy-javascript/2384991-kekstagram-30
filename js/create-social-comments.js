@@ -1,5 +1,6 @@
+// create-social-comments.js
+
 const commentElement = document.querySelector('#comment').content.querySelector('.social__comment');
-const commentList = document.querySelector('.social__comments');
 
 
 const createComment = ({ avatar, message, name }) => {
@@ -15,6 +16,7 @@ const createComment = ({ avatar, message, name }) => {
 const renderComments = (comments) => {
   const COMMENT_COUNT_SHOW = 5;
   const commentsLoader = document.querySelector('.comments-loader');
+  const commentList = document.querySelector('.social__comments');
 
   commentList.innerHTML = '';
   const commentFragment = document.createDocumentFragment();
@@ -36,7 +38,7 @@ const renderComments = (comments) => {
     const commentShownCount = document.querySelector('.social__comment-shown-count').textContent = shownCommentsCount;
     const commentTotalCount = document.querySelector('.social__comment-total-count').textContent = comments.length;
 
-    if (commentShownCount === commentTotalCount) {
+    if (commentShownCount >= commentTotalCount) {
       commentsLoader.classList.add('hidden');
     } else {
       commentsLoader.classList.remove('hidden');
@@ -46,7 +48,11 @@ const renderComments = (comments) => {
   onCommentsLoaderClick();
 
   commentsLoader.addEventListener('click', onCommentsLoaderClick);
+
+  // Возвращаем функцию удаления слушателя
+  return () => {
+    commentsLoader.removeEventListener('click', onCommentsLoaderClick);
+  };
 };
 
 export { renderComments };
-

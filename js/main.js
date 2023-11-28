@@ -1,15 +1,14 @@
 import { renderGallery } from './open-fullsize-picture.js';
-import { openUploadPicture, closeUploadPicture } from './form.js';
-import { renderMiniatures } from './create-miniatures.js';
-import './slider.js';
+import { openUploadPicture, closeUploadPicture, setUserFormSubmit } from './form.js';
 import { getData } from './api.js';
 import { showAlert } from './util.js';
+import { initFilters } from './filters.js';
 
 const bootstrap = async () => {
   try {
     const pictures = await getData();
     renderGallery(pictures);
-    renderMiniatures(pictures);
+    initFilters();
   } catch (error) {
     showAlert();
   }
@@ -18,3 +17,7 @@ const bootstrap = async () => {
 bootstrap();
 openUploadPicture();
 closeUploadPicture();
+setUserFormSubmit(() => {
+  showAlert();
+});
+

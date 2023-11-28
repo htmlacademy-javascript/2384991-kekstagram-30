@@ -91,6 +91,17 @@ const handleEffectChange = (effect) => {
       },
       start: selectedEffect.start,
       step: selectedEffect.step,
+      format: {
+        to: function (value) {
+          if (Number.isInteger(value)) {
+            return value.toFixed(0);
+          }
+          return value.toFixed(1);
+        },
+        from: function (value) {
+          return parseFloat(value);
+        },
+      },
     });
     effectLevelContainer.classList.remove('hidden');
     updateImageStyle();

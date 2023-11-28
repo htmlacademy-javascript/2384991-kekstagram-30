@@ -116,8 +116,8 @@ const onOpenUploadPictureChange = () => {
     const reader = new FileReader();
     reader.onload = (e) => {
       uploadImagePreview.src = e.target.result;
-      openUploadPicture();
     };
+    openUploadPicture();
     reader.readAsDataURL(file);
   }
 };
