@@ -15,7 +15,11 @@ const getRandomMiniatures = (miniatures, count) => {
 
 const applyFilter = (filter) => {
   const picturesContainer = document.querySelector('.pictures');
-  picturesContainer.innerHTML = '';
+  const pictures = picturesContainer.querySelectorAll('.picture');
+
+  pictures.forEach((picture) => {
+    picture.remove();
+  });
 
   getData()
     .then((miniatures) => {

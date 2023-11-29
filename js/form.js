@@ -6,6 +6,7 @@ import { resetValues, uploadImagePreview } from './slider.js';
 
 const MAX_HASHTAG_COUNT = 5;
 const VALID_HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const SubmitButtonText = {
   IDLE: 'Опубликовать',
@@ -19,6 +20,7 @@ const uploadPictureClose = form.querySelector('.img-upload__cancel');
 const hashtagField = form.querySelector('.text__hashtags');
 const commentField = form.querySelector('.text__description');
 const submitButton = form.querySelector('.img-upload__submit');
+const effectsPreviews = form.querySelectorAll('.effects__preview');
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -110,16 +112,21 @@ const openUploadPicture = () => {
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
+const isValidType = (file) => {
+  const fileName = file.name.toLowerCase();
+  return FILE_TYPES.some((it) => fileName.endsWith(it));
+};
+
 const onOpenUploadPictureChange = () => {
   const file = uploadInput.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      uploadImagePreview.src = e.target.result;
-    };
-    openUploadPicture();
-    reader.readAsDataURL(file);
+
+  if (file && isValidType(file)) {
+    uploadImagePreview.src = URL.createObjectURL(file);
+    effectsPreviews.forEach((preview) => {
+      preview.style.backgroundImage = `url('${uploadImagePreview.src}')`;
+    });
   }
+  openUploadPicture();
 };
 
 uploadInput.addEventListener('change', onOpenUploadPictureChange);
