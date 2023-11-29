@@ -1,7 +1,4 @@
-// create-social-comments.js
-
 const commentElement = document.querySelector('#comment').content.querySelector('.social__comment');
-
 
 const createComment = ({ avatar, message, name }) => {
   const newComment = commentElement.cloneNode(true);

@@ -119,13 +119,13 @@ const isValidType = (file) => {
 
 const onOpenUploadPictureChange = () => {
   const file = uploadInput.files[0];
-
   if (file && isValidType(file)) {
     uploadImagePreview.src = URL.createObjectURL(file);
-    //effectsPreviews.forEach((preview) => {
-     // preview.style.backgroundImage = `url('${uploadImagePreview.src}')`;
-    //});
+    effectsPreviews.forEach((preview) => {
+      preview.style.backgroundImage = `url('${uploadImagePreview.src}')`;
+    });
   }
+
   openUploadPicture();
 };
 
