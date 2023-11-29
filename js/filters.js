@@ -14,6 +14,7 @@ const getRandomMiniatures = (miniatures, count) => {
 };
 
 const applyFilter = (filter) => {
+
   const picturesContainer = document.querySelector('.pictures');
   const pictures = picturesContainer.querySelectorAll('.picture');
 
@@ -41,7 +42,7 @@ const applyFilter = (filter) => {
     });
 };
 
-const debouncedRenderMiniatures = debounce(applyFilter, RERENDER_DELAY);
+const debouncedApplyFilter = debounce(applyFilter, RERENDER_DELAY);
 
 const onFilterChange = (evt) => {
   const filter = evt.target.id;
@@ -52,11 +53,18 @@ const onFilterChange = (evt) => {
 
   evt.target.classList.add('img-filters__button--active');
 
-  debouncedRenderMiniatures(filter);
+  debouncedApplyFilter(filter);
+};
+
+const removeEventListeners = () => {
+  filterButtons.forEach((button) => {
+    button.removeEventListener('click', onFilterChange);
+  });
 };
 
 const initFilters = () => {
   imageFilters.classList.remove('img-filters--inactive');
+  removeEventListeners();
 
   filterButtons.forEach((button) => {
     button.addEventListener('click', onFilterChange);

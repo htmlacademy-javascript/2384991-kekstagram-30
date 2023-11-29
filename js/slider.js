@@ -1,3 +1,6 @@
+const MIN_VALUE = 0;
+const MAX_VALUE = 100;
+
 const effectList = {
   chrome: {
     filter: 'grayscale',
@@ -56,8 +59,8 @@ let selectedEffect = effectList.default;
 
 noUiSlider.create(slider, {
   range: {
-    min: 0,
-    max: 100,
+    min: MIN_VALUE,
+    max: MAX_VALUE,
   },
   connect: 'lower',
   start: selectedEffect.start,
