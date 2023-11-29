@@ -22,9 +22,4 @@ const renderMiniatures = (pictures) => {
   picturesContainer.append(miniatureFragment);
 };
 
-/*const clearMiniatures = () => {
-  picturesContainer.innerHTML = '';
-};
-*/
-
 export { renderMiniatures };

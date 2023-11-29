@@ -2,6 +2,7 @@ const SCALE_STEP = 25;
 const MIN_SCALE = 25;
 const MAX_SCALE = 100;
 const DEFAULT_SCALE = 100;
+const INITIAL_SCALE_PERCENT = 100;
 
 const form = document.querySelector('.img-upload__form');
 const scaleControlSmaller = form.querySelector('.scale__control--smaller');
@@ -10,7 +11,7 @@ const scaleControlValue = form.querySelector('.scale__control--value');
 const uploadImagePreview = form.querySelector('.img-upload__preview img');
 
 const setScale = (value) => {
-  uploadImagePreview.style.transform = `scale(${value / 100})`;
+  uploadImagePreview.style.transform = `scale(${value / INITIAL_SCALE_PERCENT})`;
   scaleControlValue.value = `${value}%`;
 };
 
