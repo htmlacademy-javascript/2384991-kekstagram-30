@@ -1,4 +1,3 @@
-// open-fullsize-picture.js
 import { renderComments } from './create-social-comments.js';
 import { isEscapeKey } from './util.js';
 import { renderMiniatures } from './create-miniatures.js';
@@ -13,9 +12,11 @@ const onOpenBigPictureClick = (evt, pictures) => {
   openBigPicture(evt.target, pictures);
 };
 
-const renderFullsizePicture = ({ url, description, likes, comments }) => {
-  bigPictureContainer.querySelector('.big-picture__img img').src = url;
-  bigPictureContainer.querySelector('.big-picture__img img').alt = description;
+const renderFullSizePicture = ({ url, description, likes, comments }) => {
+  const newImage = bigPictureContainer.querySelector('.big-picture__img img');
+
+  newImage.src = url;
+  newImage.alt = description;
   bigPictureContainer.querySelector('.likes-count').textContent = likes;
   bigPictureContainer.querySelector('.social__caption').textContent = description;
 
@@ -26,10 +27,12 @@ const renderFullsizePicture = ({ url, description, likes, comments }) => {
   commentsLoaderRemoveListener = renderComments(comments);
 };
 
+
+const removeEventListeners = (pictures) => {
+  picturesContainer.removeEventListener('click', (evt) => onOpenBigPictureClick(evt, pictures));
+};
+
 const renderGallery = (pictures) => {
-  const removeEventListeners = () => {
-    picturesContainer.removeEventListener('click', (evt) => onOpenBigPictureClick(evt, pictures));
-  };
 
   removeEventListeners();
   picturesContainer.addEventListener('click', (evt) => onOpenBigPictureClick(evt, pictures));
@@ -51,7 +54,7 @@ function openBigPicture(target, pictures) {
     return;
   }
 
-  renderFullsizePicture(selectedPicture);
+  renderFullSizePicture(selectedPicture);
   bigPictureContainer.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);

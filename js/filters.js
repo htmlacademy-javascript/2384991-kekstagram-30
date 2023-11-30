@@ -1,4 +1,4 @@
-import { renderGallery } from './open-fullsize-picture.js';
+import { renderGallery } from './open-full-size-picture.js';
 import { getData } from './api.js';
 import { debounce, showAlert } from './util.js';
 
