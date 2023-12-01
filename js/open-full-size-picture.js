@@ -7,6 +7,7 @@ const bigPictureContainer = document.querySelector('.big-picture');
 const bigPictureClose = bigPictureContainer.querySelector('.big-picture__cancel');
 
 let commentsLoaderRemoveListener;
+let isListenerExist = false;
 
 const onOpenBigPictureClick = (evt, pictures) => {
   openBigPicture(evt.target, pictures);
@@ -27,15 +28,12 @@ const renderFullSizePicture = ({ url, description, likes, comments }) => {
   commentsLoaderRemoveListener = renderComments(comments);
 };
 
-
-const removeEventListeners = (pictures) => {
-  picturesContainer.removeEventListener('click', (evt) => onOpenBigPictureClick(evt, pictures));
-};
-
 const renderGallery = (pictures) => {
 
-  removeEventListeners();
-  picturesContainer.addEventListener('click', (evt) => onOpenBigPictureClick(evt, pictures));
+  if(!isListenerExist) {
+    picturesContainer.addEventListener('click', (evt) => onOpenBigPictureClick(evt, pictures));
+    isListenerExist = true;
+  }
 
   renderMiniatures(pictures);
 };
@@ -59,7 +57,6 @@ function openBigPicture(target, pictures) {
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
 }
-
 
 const closeBigPicture = (pictures) => {
   bigPictureContainer.classList.add('hidden');

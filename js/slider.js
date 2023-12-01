@@ -67,7 +67,6 @@ noUiSlider.create(slider, {
   step: selectedEffect.step,
 });
 
-
 const updateImageStyle = () => {
   const effect = selectedEffect.filter;
   effectLevelInput.value = slider.noUiSlider.get();

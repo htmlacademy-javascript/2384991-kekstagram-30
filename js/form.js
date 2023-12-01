@@ -24,7 +24,6 @@ const effectsPreviews = form.querySelectorAll('.effects__preview');
 
 const extractHashtags = (inputValue) => inputValue.trim().toLowerCase().split(' ').filter((tag) => Boolean(tag.length));
 
-
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
