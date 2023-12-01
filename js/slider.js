@@ -67,7 +67,6 @@ noUiSlider.create(slider, {
   step: selectedEffect.step,
 });
 
-
 const updateImageStyle = () => {
   const effect = selectedEffect.filter;
   effectLevelInput.value = slider.noUiSlider.get();
@@ -95,13 +94,13 @@ const handleEffectChange = (effect) => {
       start: selectedEffect.start,
       step: selectedEffect.step,
       format: {
-        to: function (value) {
+        to (value) {
           if (Number.isInteger(value)) {
             return value.toFixed(0);
           }
           return value.toFixed(1);
         },
-        from: function (value) {
+        from (value) {
           return parseFloat(value);
         },
       },

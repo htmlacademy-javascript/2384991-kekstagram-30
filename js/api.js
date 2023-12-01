@@ -32,10 +32,8 @@ const load = async (route, errorText = null, method = Method.GET, body = null, o
   }
 };
 
-
 const getData = () => load(Route.GET_DATA, ErrorText.GET_DATA);
 
 const sendData = (pictureData, onSuccess) => load(Route.SEND_DATA, ErrorText.POST_DATA, Method.POST, pictureData, onSuccess);
-
 
 export { getData, sendData };

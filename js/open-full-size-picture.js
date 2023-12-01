@@ -1,4 +1,3 @@
-// open-fullsize-picture.js
 import { renderComments } from './create-social-comments.js';
 import { isEscapeKey } from './util.js';
 import { renderMiniatures } from './create-miniatures.js';
@@ -8,14 +7,17 @@ const bigPictureContainer = document.querySelector('.big-picture');
 const bigPictureClose = bigPictureContainer.querySelector('.big-picture__cancel');
 
 let commentsLoaderRemoveListener;
+let isListenerExist = false;
 
 const onOpenBigPictureClick = (evt, pictures) => {
   openBigPicture(evt.target, pictures);
 };
 
-const renderFullsizePicture = ({ url, description, likes, comments }) => {
-  bigPictureContainer.querySelector('.big-picture__img img').src = url;
-  bigPictureContainer.querySelector('.big-picture__img img').alt = description;
+const renderFullSizePicture = ({ url, description, likes, comments }) => {
+  const newImage = bigPictureContainer.querySelector('.big-picture__img img');
+
+  newImage.src = url;
+  newImage.alt = description;
   bigPictureContainer.querySelector('.likes-count').textContent = likes;
   bigPictureContainer.querySelector('.social__caption').textContent = description;
 
@@ -27,12 +29,11 @@ const renderFullsizePicture = ({ url, description, likes, comments }) => {
 };
 
 const renderGallery = (pictures) => {
-  const removeEventListeners = () => {
-    picturesContainer.removeEventListener('click', (evt) => onOpenBigPictureClick(evt, pictures));
-  };
 
-  removeEventListeners();
-  picturesContainer.addEventListener('click', (evt) => onOpenBigPictureClick(evt, pictures));
+  if(!isListenerExist) {
+    picturesContainer.addEventListener('click', (evt) => onOpenBigPictureClick(evt, pictures));
+    isListenerExist = true;
+  }
 
   renderMiniatures(pictures);
 };
@@ -51,12 +52,11 @@ function openBigPicture(target, pictures) {
     return;
   }
 
-  renderFullsizePicture(selectedPicture);
+  renderFullSizePicture(selectedPicture);
   bigPictureContainer.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
 }
-
 
 const closeBigPicture = (pictures) => {
   bigPictureContainer.classList.add('hidden');

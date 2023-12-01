@@ -2,9 +2,10 @@ const commentElement = document.querySelector('#comment').content.querySelector(
 
 const createComment = ({ avatar, message, name }) => {
   const newComment = commentElement.cloneNode(true);
+  const newUser = newComment.querySelector('.social__picture');
 
-  newComment.querySelector('.social__picture').src = avatar;
-  newComment.querySelector('.social__picture').alt = name;
+  newUser.src = avatar;
+  newUser.alt = name;
   newComment.querySelector('.social__text').textContent = message;
 
   return newComment;
@@ -46,7 +47,6 @@ const renderComments = (comments) => {
 
   commentsLoader.addEventListener('click', onCommentsLoaderClick);
 
-  // Возвращаем функцию удаления слушателя
   return () => {
     commentsLoader.removeEventListener('click', onCommentsLoaderClick);
   };
